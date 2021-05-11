@@ -17,8 +17,8 @@
  // Config :
 int serialSpeed=115200;
 //   wifi:
-const char* ssid = "SLVIII";           
-const char* password = "mercedes450sl"; 
+const char* ssid = "myssid";           
+const char* password = "mypassword"; 
 // Autonomous Database
 String url = "https://tn1tv18ynzxubz5-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/sensordata/sensors/iotapi/";
 String BME680sensorId=":0:119:BME680";
@@ -238,13 +238,12 @@ void postCloudSODAAPI(String payload) {
     int httpResponseCode = 0;
 
     httpResponseCode =http.POST(payload);
-
-    if(httpResponseCode>0){
-      String response = http.getString(); //Get the response to the request
-      Serial.println(httpResponseCode);   //Print return code
-      if (DebugRest) Serial.println(response);           //Print request answer
-      http.end();  //Free resources
-    }
+    Serial.println(httpResponseCode);   //Print return code
+#ifdef DEBUG
+    String response = http.getString(); //Get the response to the request
+    Serial.println(response);           //Print request answer
+#endif
+    http.end();  //Free resources
   }
   else{
       Serial.println("Error in WiFi connection");

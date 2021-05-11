@@ -92,7 +92,7 @@ ORDS.DEFINE_HANDLER(
       p_mimes_allowed  => '',
       p_comments       => NULL,
       p_source         => 
-'select objecname,create_time,sensorname, sensorvalue from sensors where objectname=:objectname'
+'select objectname,create_time,sensorname, sensorvalue from sensors where objectname=:objectname'
       );  
 commit;
 end;
@@ -120,8 +120,6 @@ END;'
   COMMIT; 
 END;
 /
-commit;
-end;
-/
+
 
 
