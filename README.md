@@ -7,4 +7,5 @@ Collection of material from techAngelist, by Oracle meetups
 - Lab for preparing your computer for Arduino IDE
 - Lab for building the code scanning the sensro and ingesting into Oracle ATP over REST
 - Source code for PL/SQL 
+- plsql_lab_110521.sql
 - Arduino Source code
