@@ -40,7 +40,10 @@ ORDS.DEFINE_TEMPLATE(
       p_etag_query     => NULL,
       p_comments       => NULL);
       
-  The URL will be ttps://tn1tv18ynzxubz6-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/
-  
- The full URL for user sensordata will be:
- "https://tn1tv18ynzxubz6-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/sensordata/sensors/iotapi/";
+ URL:to OCI Console: https://tn1tv18ynzxubz6-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/
+ DB Schema:  sensordata
+ Template module name:  sensors
+ pattern:  iotapi/
+ 
+ The full URL for user sensordata will then be:
+ "https://tn1tv18ynzxubz6-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/sensordata/sensors/iotapi/
