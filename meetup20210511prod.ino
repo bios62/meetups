@@ -14,20 +14,59 @@
   Written by Limor Fried & Kevin Townsend for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
- // Config :
+/******************************************************************************/
+#include <WiFi.h> 
+boolean DebugRest=false;
+#include <HTTPClient.h>
+#include "base64.h"
+#include <WiFiClientSecure.h>
+
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_Sensor.h>
+// Config BME680
+#include "Adafruit_BME680.h"
+
+#define BME_SCK 13
+#define BME_MISO 12
+#define BME_MOSI 11
+#define BME_CS 10
+#define SEALEVELPRESSURE_HPA (1013.25)
+
+
+//
+// Debug flag
+//
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
+Adafruit_BME680 bme; // I2C
+
+String ArduinoDevice="Unknown";
+String XId="";
+
+String Id="Feather"; 
+ 
+// Config :
 int serialSpeed=115200;
+
 //   wifi:
-const char* ssid = "myssid";           
-const char* password = "mypassword"; 
+
+const char* ssid = "SLVIII";           
+const char* password = "**********";
+
 // Autonomous Database
+
 String url = "https://tn1tv18ynzxubz5-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/sensordata/sensors/iotapi/";
 String BME680sensorId=":0:119:BME680";
 
-//#define SODA
+#define SODA
 
 #ifdef SODA
 String uidSODA="sensordata";
-String pwdSODA="**********";
+String pwdSODA="###########";
+String sodaUrl="https://tn1tv18ynzxubz5-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/sensordata/soda/latest/iot/";
 #endif
 
 /***************************************************************************/ 
@@ -52,32 +91,7 @@ int DelayBefore2ndUpdateCloud=0;
 int DelayBeforeDisconnectWifi=1000;
 
 boolean ConnectCloud=true;
-/******************************************************************************/
-#include <WiFi.h> 
-boolean DebugRest=false;
-#include <HTTPClient.h>
-#include "base64.h"
-#include <WiFiClientSecure.h>
 
-#include <Wire.h>
-#include <SPI.h>
-#include <Adafruit_Sensor.h>
-// Config BME680
-#include "Adafruit_BME680.h"
-
-#define BME_SCK 13
-#define BME_MISO 12
-#define BME_MOSI 11
-#define BME_CS 10
-
-#define SEALEVELPRESSURE_HPA (1013.25)
-
-Adafruit_BME680 bme; // I2C
-
-String ArduinoDevice="Unknown";
-String XId="";
-
-String Id="Feather";
 
 
 // This is GandiStandardSSLCA2.pem, the root Certificate Authority that signed 
@@ -210,16 +224,21 @@ void setupESP(){
 void postCloud(String sensorId,String sensorName,int sensorValue) {
   if(WiFi.status()== WL_CONNECTED){   //Check WiFi connection status
     HTTPClient http;
-    http.begin(url,rootCACertificate);
+    //
+    // Newer  version of HTTPClient lib use certificate included in lib, not defined explisitly
+    //
+    // http.begin(url,rootCACertificate);
+    http.begin(url);
     http.addHeader("Content-Type", "application/json");
     int httpResponseCode = 0;
     httpResponseCode =http.POST(getMsg(sensorId,sensorName,sensorValue));
-    if(httpResponseCode>0){
-      String response = http.getString(); //Get the response to the request
-      Serial.println(httpResponseCode);   //Print return code
-      if (DebugRest) Serial.println(response);           //Print request answer
-      http.end();  //Free resources
-    }
+    Serial.println("HTTP Response code: "+String(httpResponseCode));
+    
+#if DEBUG==1
+    String response = http.getString(); //Get the response to the request
+    Serial.println(response);           //Print request answer
+#endif
+    http.end();  //Free resources
   }
   else{
       Serial.println("Error in WiFi connection");
@@ -230,7 +249,11 @@ void postCloud(String sensorId,String sensorName,int sensorValue) {
 void postCloudSODAAPI(String payload) {
   if(WiFi.status()== WL_CONNECTED){   //Check WiFi connection status
     HTTPClient http;
-    http.begin(url,rootCACertificate);
+    //
+    // Newer  version of HTTPClient lib use certificate included in lib, not defined explisitly
+    //
+    // http.begin(url,rootCACertificate);
+    http.begin(sodaUrl);
     http.addHeader("Content-Type", "application/json");
     String auth = base64::encode(uidSODA+":"+pwdSODA);
     http.addHeader("Authorization","Basic "+auth);
@@ -238,12 +261,15 @@ void postCloudSODAAPI(String payload) {
     int httpResponseCode = 0;
 
     httpResponseCode =http.POST(payload);
-    Serial.println(httpResponseCode);   //Print return code
-#ifdef DEBUG
+    Serial.println("HTTP POST: "+payload);
+    Serial.println("HTTP Response code: "+String(httpResponseCode));
+#if DEBUG==1
+    Serial.println("Post Payload: "+payload);
     String response = http.getString(); //Get the response to the request
     Serial.println(response);           //Print request answer
 #endif
     http.end();  //Free resources
+
   }
   else{
       Serial.println("Error in WiFi connection");
@@ -344,16 +370,15 @@ void BME680read(String sensorId,boolean updateCloud) {
       String payload="{\"objectname\":\""+sensorId+"\",\"sensordata\":[";
       payload=payload+addSensorPayload(payload,"TempMC",tempi)+",";
       payload=payload+addSensorPayload(payload,"Pres",bme.pressure/100)+",";
-      payload=payload+addSensorPayload(payload,"Hum",bme.pressure/100)+",";
-      payload=payload+addSensorPayload(payload,"AirQ",bme.pressure/100);
+      payload=payload+addSensorPayload(payload,"Hum",bme.humidity)+",";
+      payload=payload+addSensorPayload(payload,"AirQ",bme.gas_resistance);
       payload=payload+"]}"; 
-      Serial.println(payload);
       postCloudSODAAPI(payload);
 #else
       postCloud(sensorId,"TempMC",tempi);
       postCloud(sensorId,"Pres",bme.pressure/100);
-      postCloud(sensorId,"Hum",bme.pressure/100);
-      postCloud(sensorId,"AirQ",bme.pressure/100); 
+      postCloud(sensorId,"Hum",bme.humidity);
+      postCloud(sensorId,"AirQ",bme.gas_resistance);
 #endif
   }
 }
