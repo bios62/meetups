@@ -1,35 +1,7 @@
-drop table sensors; 
 
-create table sensors (id NUMBER GENERATED ALWAYS as IDENTITY(START with 1 INCREMENT by 1) primary key,
-                      create_time timestamp default systimestamp,
-                      objectname varchar2(20),
-                      sensorname varchar2(20),
-                      sensorvalue varchar2(20));
-
-
-begin
-insert into sensors (objectname,sensorname,sensorvalue) values('test','temp','22.0');
-insert into sensors (objectname,sensorname,sensorvalue) values('test','temp','23.0');
-insert into sensors (objectname,sensorname,sensorvalue) values('test','temp','24.0');
-commit;
-end;
-/
-
-DECLARE
-  PRAGMA AUTONOMOUS_TRANSACTION;
-BEGIN
-    ORDS.ENABLE_OBJECT(p_enabled => TRUE,
-                       p_schema => 'SENSORDATA',
-                       p_object => 'SENSORS',
-                       p_object_type => 'TABLE',
-                       p_object_alias => 'sensorapi',
-                       p_auto_rest_auth => FALSE);
-
-    commit;
-
-END;
-/
-
+rem
+rem Run this as admin, if WEB or ORDS is note enabled with database actions usermanagement
+rem
 DECLARE
   PRAGMA AUTONOMOUS_TRANSACTION;
 BEGIN
@@ -41,7 +13,31 @@ BEGIN
     commit;
 END;
 /
-      
+rem   
+rem to be run as schema owner
+rem
+reem if needed get rid of old stuff
+remdrop table sensors; 
+rem create table to hold non json sensor database
+rem
+create table sensors (id NUMBER GENERATED ALWAYS as IDENTITY(START with 1 INCREMENT by 1) primary key,
+                      create_time timestamp default systimestamp,
+                      objectname varchar2(40),
+                      sensorname varchar2(20),
+                      sensorvalue varchar2(20));
+rem
+rem add some dummy data to verify the GET request
+rem
+begin
+insert into sensors (objectname,sensorname,sensorvalue) values('test','temp','22.0');
+insert into sensors (objectname,sensorname,sensorvalue) values('test','temp','23.0');
+insert into sensors (objectname,sensorname,sensorvalue) values('test','temp','24.0');
+commit;
+end;
+/
+rem
+rem define the template
+rem     
 begin
 ORDS.DEFINE_MODULE(
       p_module_name    => 'sensors',
@@ -66,6 +62,9 @@ ORDS.DEFINE_TEMPLATE(
 commit;
 end;
 /
+rem
+rem define handlers
+rem
 begin
 ORDS.DEFINE_HANDLER(
       p_module_name    => 'sensors',
@@ -81,7 +80,9 @@ ORDS.DEFINE_HANDLER(
 commit;
 end;
 /
-
+rem
+rem define handlers
+rem
 begin
 ORDS.DEFINE_HANDLER(
       p_module_name    => 'sensors',
@@ -97,7 +98,9 @@ ORDS.DEFINE_HANDLER(
 commit;
 end;
 /
-
+rem
+rem define handlers
+rem
 begin
   ORDS.DEFINE_HANDLER(
       p_module_name    => 'sensors',
@@ -120,6 +123,7 @@ END;'
   COMMIT; 
 END;
 /
-
-
+rem
+rem  test with postman GET on https://<cloud tenant url>/ords/<schema name>/sensors/iotapi/
+rem
 
