@@ -18,9 +18,19 @@ For the code to run in your envrionment, you need to change
 
 If you will use SODA interface
 
-//#define OSDA needs to be changed to #define SODA
+//#define SODA needs to be changed to #define SODA
 
-String URL="Your API URL"
+String sodaUrl="Your SODA API URL";
+String uidSODA="database username";
+String pwdSODA="Database Password";
+
+
+If you use traditional REST ORDS interface
+Make sure //#define SODA is unset
+change
+String url="Your ORDS URL";
+
+
 
 Recent changes:
 
