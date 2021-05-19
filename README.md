@@ -15,8 +15,11 @@ Collection of material from techAngelist, by Oracle meetups
 The lab require some parts form either digikey or mouser.
 You may order the following parts from Mouser:
 https://no.mouser.com/ProductDetail/Adafruit/3619?qs=sGAEpiMZZMu3sxpa5v1qrlKzXlDUmWhOUpteeGygzU0%3D
+
 https://no.mouser.com/ProductDetail/Seeed-Studio/103100062?qs=uwxL4vQweFOCqRcwBc9i%2FQ%3D%3D
+
 https://no.mouser.com/ProductDetail/Adafruit/4528?qs=OlC7AqGiEDmHEtHHQiIw7w%3D%3D
+
 https://no.mouser.com/ProductDetail/Adafruit/3660?qs=W0yvOO0ixfFypXCClAyRMg%3D%3D
 
 
