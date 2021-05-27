@@ -3,9 +3,9 @@ Collection of material from techAngelist, by Oracle meetups
 
 27/5-2021 material for the From Edge to ML, Demo and Lab,  Auto ML
 
-The following files is needed rfor the day 2 lab:
+The following files is needed for the day 2 lab:
 
-- WS_Postman.zip, postman collections and envrionment for calling the ML REST API
+- WS_Postman.zip, postman collections and environment for calling the ML REST API
 - OML_AutoML_2705.pdf, presentation of 27/6
 
 11/5-2021 From Edge to ML Arduino hands on lab
