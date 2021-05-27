@@ -124,6 +124,6 @@ END;'
 END;
 /
 rem
-rem  test with postman GET on https://<cloud tenant url>/ords/<schema name>/sensors/iotapi/
+rem  test with postman GET on https://<cloud tenant url>/ords/<schema name>/sensorapi/iotapi/
 rem
 
