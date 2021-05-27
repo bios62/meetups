@@ -1,4 +1,4 @@
-# meetups
+# Edge to ML meetups
 Collection of material from techAngelist, by Oracle meetups
 
 27/5-2021 material for the From Edge to ML, Demo and Lab,  Auto ML
