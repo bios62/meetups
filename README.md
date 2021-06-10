@@ -3,9 +3,9 @@ Collection of material from techAngelist, by Oracle meetups
 
 10/6-2021 material for the From Edge to ML, Demo and Lab,  Auto ML
 
-- iot_oml_apex_lab3.pdf
-- lab3_scripts.zip
-- 
+- iot_oml_apex_lab3.pdf  lab notes and guide
+- lab3_scripts.zip Zip file with SQL scripts
+
 You will need the following files for this day 3 lab:
 
 
