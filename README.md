@@ -1,6 +1,14 @@
 # Edge to ML meetups
 Collection of material from techAngelist, by Oracle meetups
 
+10/6-2021 material for the From Edge to ML, Demo and Lab,  Auto ML
+
+- iot_oml_apex_lab3.pdf
+- iot_oml_apex_lab3.pdf
+- 
+You will need the following files for this day 3 lab:
+
+
 27/5-2021 material for the From Edge to ML, Demo and Lab,  Auto ML
 
 The following files is needed for the day 2 lab:
