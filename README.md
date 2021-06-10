@@ -6,6 +6,11 @@ Collection of material from techAngelist, by Oracle meetups
 - iot_oml_apex_lab3.pdf  lab notes and guide
 - lab3_scripts.zip Zip file with SQL scripts
 
+Introduction presentation: EE2ML100621.pdf
+
+Link to: oracle labs:
+https://apexapps.oracle.com/pls/apex/dbpm/r/livelabs/view-workshop?wid=786
+
 You will need the following files for this day 3 lab:
 
 
